@@ -18,26 +18,35 @@ my_com <- scale_y_continuous(labels = scales::comma_format())
 # 
 # 
 # Yearly trend ------------------------------------------------------------
-demos <- function(x){
-  if(is_null(x) | "All" %in% x){
+demos <- function(belt, years){
+  if(is_null(belt) | belt == "All"){
     tmp <- bites
   }
   else{
-    print(x)
     tmp <- bites %>% 
-      filter(Region %in% x)
+      filter(Belt == belt)
   }
   
-  yr_gen <- tmp %>% 
-  group_by(Year, Gender) %>%
-  summarise(Number = sum(Number), .groups = "keep") %>%
-  ggline(x="Year", y = "Number", group = "Gender", color = "Gender",
-         palette = palette_pander(n = 2)) + my_com
+  tmp <- tmp %>% 
+    filter(Year %in% years)
+  
+  gens <- tmp %>% 
+    count(Gender) %>% 
+    ggdonutchart(x= "n", label = "Gender", fill = "Gender", lab.pos = "out", lab.font = c(0, "italize", "green"), lab.adjust = .2, palette = palette_pander(n = 2)) + theme(legend.position = "none")
+  
+  mon_gen <- tmp %>%
+    group_by(Month, Gender) %>%
+      mutate(
+        Month = factor(Month, labels = month.abb, levels = 1:12)
+      ) %>% 
+    summarise(Number = sum(Number), .groups = "keep") %>%
+    ggline(x="Month", y = "Number", group = "Gender", color = "Gender",
+         palette = "startrek") + my_com
   
   # Monthly trend by age ----------------------------------------------------
   age_gen_mon <- tmp %>% 
       group_by(Month, AgeGroup, Gender) %>% 
-      summarise(Number = sum(Number)) %>% 
+      summarise(Number = sum(Number), .groups = "keep") %>% 
       mutate(
         Month = factor(Month, labels = month.abb, levels = 1:12)
       ) %>% 
@@ -45,12 +54,15 @@ demos <- function(x){
       my_com
   
   # Age and gender ----------------------------------------------------------
-  age_gender <- tmp %>% 
+  age_gender <- bites %>% 
       group_by(AgeGroup, Gender) %>% 
-      summarise(Cases = sum(Number)) %>% 
-      ggbarplot(x = "AgeGroup", position = position_dodge(), y = "Cases", fill = "Gender", palette = "startrek")  +
+      summarise(Cases = sum(Number), .groups = "keep") %>% 
+      ggbarplot(x = "AgeGroup", y = "Cases", fill = "Gender", palette = "startrek", facet.by = "Gender")  + 
+    theme(
+      legend.position = "none"
+    ) + 
       my_com
-  return(list(yg = age_gender, agm = age_gen_mon, yg =yr_gen))
+  return(list(ag = age_gender, agm = age_gen_mon, mg =mon_gen, g = gens))
 }
 # 
 # 
