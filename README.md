@@ -30,4 +30,7 @@
       <a href="https://kwakuduahc1.shinyapps.io/snakebites_in_ghana/">The dashboard is available here</a>
     </p>
   </section>
+  <section>
+    <em>The dataset for this dashboard is only available on request and at my discretion</em>
+  </section>
 </article>
