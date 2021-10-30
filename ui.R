@@ -38,18 +38,18 @@ semanticPage(
                          plotOutput("year_gender")
                          ),
                      bot1 = div(
-                         h2("Reported cases of snakebites by age and gender", class = "ui header centered orange"),
+                         h2("Reported cases by age and gender", class = "ui header centered orange"),
                          plotOutput("age_gender")
                          ),
                      bot2 = div(
                          h2("Montly reported of snakebites by age and gender", class = "ui header centered violet"),
                          plotOutput("age_gen_mon")
-                         ),
-                     bot3 = div(
-                         
+                         )
                      )
-                     )
-                 )
+                 ),
+            list(menu = "Tables", id = "tbls", 
+                 content = div("Tables")
             )
         )
+    )
 )
