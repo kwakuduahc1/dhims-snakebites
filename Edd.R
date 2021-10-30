@@ -18,7 +18,7 @@ my_com <- scale_y_continuous(labels = scales::comma_format())
 # 
 # 
 # Yearly trend ------------------------------------------------------------
-year_gender <- function(x){
+demos <- function(x){
   if(is_null(x) | "All" %in% x){
     tmp <- bites
   }
@@ -28,11 +28,29 @@ year_gender <- function(x){
       filter(Region %in% x)
   }
   
-  tmp %>% 
+  yr_gen <- tmp %>% 
   group_by(Year, Gender) %>%
   summarise(Number = sum(Number), .groups = "keep") %>%
   ggline(x="Year", y = "Number", group = "Gender", color = "Gender",
          palette = palette_pander(n = 2)) + my_com
+  
+  # Monthly trend by age ----------------------------------------------------
+  age_gen_mon <- tmp %>% 
+      group_by(Month, AgeGroup, Gender) %>% 
+      summarise(Number = sum(Number)) %>% 
+      mutate(
+        Month = factor(Month, labels = month.abb, levels = 1:12)
+      ) %>% 
+      ggline(x = "Month", y="Number", color = "AgeGroup", palette = "pander", facet.by = "Gender") +
+      my_com
+  
+  # Age and gender ----------------------------------------------------------
+  age_gender <- tmp %>% 
+      group_by(AgeGroup, Gender) %>% 
+      summarise(Cases = sum(Number)) %>% 
+      ggbarplot(x = "AgeGroup", position = position_dodge(), y = "Cases", fill = "Gender", palette = "startrek")  +
+      my_com
+  return(list(yg = age_gender, agm = age_gen_mon, yg =yr_gen))
 }
 # 
 # 
@@ -50,26 +68,8 @@ year_gender <- function(x){
 #   my_com
 #      
 
-# Monthly trend by age ----------------------------------------------------
-age_gen_mon <- reactive({
-  bites %>% 
-  group_by(Month, AgeGroup, Gender) %>% 
-  summarise(Number = sum(Number)) %>% 
-  mutate(
-    Month = factor(Month, labels = month.abb, levels = 1:12)
-  ) %>% 
-  ggline(x = "Month", y="Number", color = "AgeGroup", palette = "pander", facet.by = "Gender") +
-  my_com
-})
 
-# Age and gender ----------------------------------------------------------
-age_gender <- reactive({
-  bites %>% 
-  group_by(AgeGroup, Gender) %>% 
-  summarise(Cases = sum(Number)) %>% 
-  ggbarplot(x = "AgeGroup", position = position_dodge(), y = "Cases", fill = "Gender", palette = "startrek")  +
-  my_com
-})
+
 
 # Bites by sector ---------------------------------------------------------
 belt <- reactive({

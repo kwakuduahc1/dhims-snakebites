@@ -17,13 +17,13 @@ semanticPage(
                                  c("top1", "top2"),
                                  c("bot1", "bot2")
                                  ),
-                             rows_height = c("5%", "15%", "15%"),
+                             rows_height = c("5%", "45%", "45%"),
                              cols_width = c("40%", "60%")
                              )
                          ), 
                      head1 = div(
                          selectInput("regions", "Regions:",selected = "All",
-                                     c("All", regs), multiple = T, width = "50%")
+                                     c("All", regs), multiple = T, width = "100%")
                      ),
                      head2 = div(
                          # selectInput("regions", "Regions:",
