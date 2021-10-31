@@ -4,6 +4,7 @@ library(shiny.semantic)
 source("Edd.R")
 regs <- unique(bites$Belt) %>% sort()
 semanticPage(
+    theme = "united",
     title = "Snakebites in Ghna",
     h1(class = "ui header teal centered", icon_name = "dog", "Snakebites in Ghana from the DHIMS database"),
     grid(
