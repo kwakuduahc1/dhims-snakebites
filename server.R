@@ -3,11 +3,11 @@ shinyServer(function(input, output, env) {
     # output$belt <- renderPlot(belt())
     
     reg <- reactive(input$regions) %>% 
-      bindCache(input$regions) %>% 
+      bindCache(input$regions, input$years) %>% 
       bindEvent(input$regions)
     
     yrs <- reactive(input$years) %>% 
-      bindCache(input$years) %>% 
+      bindCache(input$years, input$regions) %>% 
       bindEvent(input$years)
     
     output$age_gender <- renderPlot(demos(reg(), yrs())$ag)
