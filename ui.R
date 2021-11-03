@@ -8,7 +8,7 @@ regs <- unique(bites$Belt) %>% sort()
 semanticPage(
   theme = "superhero",
   title = "Snakebites in Ghna",
-  h1(class = "ui header teal centered", "Snakebites in Ghana from the DHIMS database"),
+  h1(class = "ui header teal centered", "Snakebites in Ghana"),
   div(
     class = "ui grid vertically divided",
     div(
