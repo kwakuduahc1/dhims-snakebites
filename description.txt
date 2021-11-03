@@ -1,0 +1,11 @@
+<article>
+  <h1 class = "head">Introduction</h1>
+  <section>
+    <p>Snakebite is a neglected tropical disease and presents a huge burden to the victims and healthcare systems.Snakebite victims are often poor rural folks, farmers, and children.</p>
+  </section>
+  <section>
+    <h2 class = "head">Methods</h2>
+    <p>Data from 2016 to 2020 was extracted from the DHIMS database.</p>
+    <p>Age groups were further collapsed into fewer groups for easy presentation from the data source</p>
+  </section>
+</article>

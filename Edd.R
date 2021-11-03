@@ -2,10 +2,8 @@
 library(DBI)
 library(tidyverse)
 library(ggpubr)
-library(gtsummary)
 library(flextable)
 library(ggthemes)
-
 bites <- read_rds("bites.rds")
 my_com <- scale_y_continuous(labels = scales::comma_format())
 
@@ -54,7 +52,7 @@ demos <- function(belt, years){
       my_com
   
   # Age and gender ----------------------------------------------------------
-  age_gender <- bites %>% 
+  age_gender <- tmp %>% 
       group_by(AgeGroup, Gender) %>% 
       summarise(Cases = sum(Number), .groups = "keep") %>% 
       ggbarplot(x = "AgeGroup", y = "Cases", fill = "Gender", palette = "startrek", facet.by = "Gender")  + 
@@ -62,7 +60,19 @@ demos <- function(belt, years){
       legend.position = "none"
     ) + 
       my_com
-  return(list(ag = age_gender, agm = age_gen_mon, mg =mon_gen, g = gens))
+  
+  tbl <- tmp %>% group_by(Region) %>% 
+    summarise(
+      Cases = sum(Number)
+      ) %>% 
+    mutate(
+      Cases = str_glue( "{Cases} ({round(Cases/sum(Cases) * 100,1)}%)")
+    ) %>% 
+    flextable()%>%
+    theme_tron() %>%
+    autofit() %>%
+    htmltools_value()
+  return(list(ag = age_gender, agm = age_gen_mon, mg =mon_gen, g = gens, t = tbl))
 }
 # 
 # 

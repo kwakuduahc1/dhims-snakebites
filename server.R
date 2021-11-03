@@ -10,8 +10,14 @@ shinyServer(function(input, output, env) {
       bindCache(input$years, input$regions) %>% 
       bindEvent(input$years)
     
-    output$age_gender <- renderPlot(demos(reg(), yrs())$ag)
-    output$gens <- renderPlot(demos(reg(), yrs())$g)
-    output$month_gender <- renderPlot(demos(reg(), yrs())$mg)
-    output$age_gen_mon <- renderPlot(demos(reg(), yrs())$agm)
+    dset <- reactive({
+      demos(reg(), yrs())
+    })
+    
+    output$gens <- renderPlot(dset()$g)
+    output$age_gender <- renderPlot(dset()$ag)
+    output$month_gender <- renderPlot(dset()$mg)
+    output$age_gen_mon <- renderPlot(dset()$agm)
+    output$tbl <- renderUI(dset()$t)
+    output$smry <- renderText(read_file("description.txt"))
 })

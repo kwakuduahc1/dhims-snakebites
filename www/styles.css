@@ -1,0 +1,16 @@
+.head {
+    padding: 10px 5px 5px 5px;
+    color: rgba(162, 206, 245, .8);
+}
+
+img {
+    opacity: 0.75;
+}
+
+img:hover {
+    opacity: 1.0;
+}
+
+.field label {
+    color: azure;
+}
